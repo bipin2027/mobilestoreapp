@@ -19,14 +19,15 @@ const Product = props => {
   const [defaulSort, setSort] = useState('Best Match')
   const [currentPage, setCurrentPage]= useState(1);
   const [productPerPage]=useState(9);
+  const [searchItem,setSerachItem]= useState('')
   console.log(props);
 
   useEffect(() => {
     props.updateProducts()
-  }, [])
+  }, [searchItem])
 
-  var filteredProducts = props.products.filter(product=>{
-    return product.Name.toLowerCase().indexOf('') !== -1;
+  const filteredProducts = props.products.filter(product=>{
+    return product.Name.toLowerCase().indexOf(searchItem) !== -1;
   })
   const indexOfLastProduct= currentPage * productPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productPerPage;  
@@ -54,18 +55,6 @@ const Product = props => {
   //change page
   const paginate=(pageNumber) => setCurrentPage(pageNumber);
 
-  function searchProducts(event){
-    event.preventDefault();
-    
-    const Test = props.products.filter(product=>{
-      return product.Name.toLowerCase().indexOf(event.target.value) !== -1;
-    })
-    if(Test.length){
-      filteredProducts=Test
-    }
-    console.log(Test)
-  }
-
   return (
     <div className="container mt-2">
       <div className="row">
@@ -77,7 +66,7 @@ const Product = props => {
                 Results
                       </span> */}
                 <div className="col">
-                  <Input label="Search Country" icon="search" onChange={e=>{searchProducts(e)}} />
+                  <Input label="Search Country" icon="search" placeholder="Search Items" onChange={(e)=>{setSerachItem(e.target.value)}} />
                 </div>
               </div>
             </div>
